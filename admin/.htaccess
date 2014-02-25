@@ -1,0 +1,13 @@
+#SetEnv APPLICATION_ENV development
+
+<Files config.ini>
+order deny,allow
+deny from all
+</Files>
+
+Options +FollowSymLinks
+IndexIgnore */*
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . index.php

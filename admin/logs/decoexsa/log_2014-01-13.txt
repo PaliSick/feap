@@ -1,0 +1,24 @@
+2014-01-13 16:37:02 - INFO --> Transaction Started 
+2014-01-13 16:37:02 - INFO --> UPDATE: UPDATE pedidos SET estado=2, factura=19, forma='contado', plazo='0', dias='0', fecha_factura=NOW() WHERE id=45 
+2014-01-13 16:37:02 - CRIT --> Insert address query failed: . Error: Query was empty 
+2014-01-13 16:41:58 - INFO --> Transaction Started 
+2014-01-13 16:41:58 - INFO --> UPDATE: UPDATE pedidos SET estado=2, factura=19, forma='', plazo='0', dias='0', fecha_factura=NOW() WHERE id=44 
+2014-01-13 16:41:58 - CRIT --> Insert address query failed: . Error: Query was empty 
+2014-01-13 16:44:27 - INFO --> Transaction Started 
+2014-01-13 16:44:27 - INFO --> UPDATE: UPDATE pedidos SET estado=2, factura=19, forma='', plazo='0', dias='0', fecha_factura=NOW() WHERE id=44 
+2014-01-13 16:44:27 - CRIT --> Insert address query failed: . Error: Query was empty 
+2014-01-13 16:45:33 - INFO --> Transaction Started 
+2014-01-13 16:45:33 - INFO --> UPDATE: UPDATE pedidos SET estado=2, factura=19, forma='contado', plazo='0', dias='0', fecha_factura=NOW() WHERE id=45 
+2014-01-13 16:45:33 - CRIT --> Insert address query failed: . Error: Query was empty 
+2014-01-13 16:45:58 - INFO --> Transaction Started 
+2014-01-13 16:45:58 - INFO --> UPDATE: UPDATE pedidos SET estado=2, factura=19, forma='contado', plazo='0', dias='0', fecha_factura=NOW() WHERE id=45 
+2014-01-13 16:45:58 - INFO --> Pedido correctamente aprobado 
+2014-01-13 16:46:21 - INFO --> Transaction Started 
+2014-01-13 16:46:21 - INFO --> UPDATE: UPDATE pedidos SET estado=2, factura=20, forma='', plazo='0', dias='0', fecha_factura=NOW() WHERE id=44 
+2014-01-13 16:46:21 - INFO --> Pedido correctamente aprobado 
+2014-01-13 16:46:29 - INFO --> Transaction Started 
+2014-01-13 16:46:29 - INFO --> UPDATE: UPDATE pedidos SET estado=2, factura=21, forma='', plazo='0', dias='0', fecha_factura=NOW() WHERE id=50 
+2014-01-13 16:46:29 - INFO --> Pedido correctamente aprobado 
+2014-01-13 16:46:30 - INFO --> Transaction Started 
+2014-01-13 16:46:30 - INFO --> UPDATE: UPDATE pedidos SET estado=2, factura=22, forma='contado', plazo='0', dias='0', fecha_factura=NOW() WHERE id=40 
+2014-01-13 16:46:30 - INFO --> Pedido correctamente aprobado 

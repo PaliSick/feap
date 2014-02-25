@@ -1,0 +1,18 @@
+2013-07-22 15:16:17 - INFO --> Transaction Started 
+2013-07-22 15:16:17 - INFO --> Billing address inserted. ID: 1 
+2013-07-22 15:16:17 - INFO --> Shipping address inserted. ID: 2 
+2013-07-22 15:16:17 - INFO --> Order product inserted '' - Stock remaining:  
+2013-07-22 15:16:18 - DEBUG --> Failed to send notification email. Error: SMTP Error: The following recipients failed: palimaynard@gmail.com 
+2013-07-22 15:16:18 - INFO --> Transaction Committed. 
+2013-07-22 16:20:39 - INFO --> Transaction Started 
+2013-07-22 16:20:39 - INFO --> Billing address inserted. ID: 3 
+2013-07-22 16:20:39 - INFO --> Shipping address inserted. ID: 4 
+2013-07-22 16:20:39 - INFO --> Order product inserted '' - Stock remaining:  
+2013-07-22 16:20:39 - DEBUG --> Failed to send notification email. Error: SMTP Error: The following recipients failed: palimaynard@gmail.com 
+2013-07-22 16:20:39 - INFO --> Transaction Committed. 
+2013-07-22 16:46:34 - INFO --> Transaction Started 
+2013-07-22 16:46:34 - INFO --> Billing address inserted. ID: 5 
+2013-07-22 16:46:34 - INFO --> Shipping address inserted. ID: 6 
+2013-07-22 16:46:34 - INFO --> Order product inserted '' - Stock remaining:  
+2013-07-22 16:46:34 - DEBUG --> Failed to send notification email. Error: SMTP Error: The following recipients failed: palimaynard@gmail.com 
+2013-07-22 16:46:34 - INFO --> Transaction Committed. 
