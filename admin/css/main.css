@@ -426,10 +426,11 @@ textarea {vertical-align:text-top;}
 .idp-table-min .even td{background-color:#FFFFFF;}
 .idp-table-min .odd td{background-color:#F5F5F5;}
 a.delete, #idp-cfgpanel a.edit, 
-a.confirm,a.crear, a.agregar,  #idp-cfgpanel a.details{display:block; width:16px; height: 16px; line-height:16px;  text-indent:-99999px; overflow: hidden; margin: auto; }
+a.confirm,a.crear, a.agregar,  #idp-cfgpanel a.details, a.descarga{display:block; width:16px; height: 16px; line-height:16px;  text-indent:-99999px; overflow: hidden; margin: auto; }
 a.details {background: transparent url("../img/find.png") scroll no-repeat top left;}
 a.confirm {background: transparent url("../img/accept.png") scroll no-repeat top left;}
 a.delete {background: transparent url("../img/trash.png") scroll no-repeat top left;}
+a.descarga {background: transparent url("../img/icon_download.png") scroll no-repeat top left;}
 a.edit {
     background: url("../img/edit.png") no-repeat scroll left top transparent;
 }
