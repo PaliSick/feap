@@ -1,7 +1,47 @@
 {include="templates/head"}
-
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 	<script type="text/javascript">
+
+		function initialize(){
+			//MAP
+			
+			{if="$latitud>0"}
+			  var latlng = new google.maps.LatLng({$latitud},{$longitud});
+			{else}
+			  var latlng = new google.maps.LatLng(40.41573004568194, -3.68425733786625);
+			{/if}
+			  var options = {
+			    zoom: 10,
+			    center: latlng,
+			    mapTypeId: google.maps.MapTypeId.ROADMAP
+			  };
+			        
+			  map = new google.maps.Map(document.getElementById("mapa"), options);
+			        
+			  //GEOCODER
+			  geocoder = new google.maps.Geocoder();
+			        
+			  marker = new google.maps.Marker({
+			  position: latlng,  
+			    map: map,
+			    scrollwheel:false,
+			    draggable: true
+			  });
+		        
+		}
 		$(document).ready(function(e) {
+			initialize();
+			  //Add listener to marker for reverse geocoding
+			google.maps.event.addListener(marker, 'drag', function() {
+				geocoder.geocode({'latLng': marker.getPosition()}, function(results, status) {
+				  if (status == google.maps.GeocoderStatus.OK) {
+				    if (results[0]) {
+				      $('#latitud').val(marker.getPosition().lat());
+				      $('#longitud').val(marker.getPosition().lng());
+				    }
+				  }
+				});
+			});
 
 			$('#new-comercial').submit(function(e) {
 				var $this = $(this);
@@ -64,7 +104,12 @@
 		});
 
 	</script>
-
+<style type="text/css">
+	#mapa{float: left; width: 350px; height: 350px;}
+	#idp-cfgpanel-left{float: left;width: 500px;}
+	#idp-cfgpanel-mitad{float: left;width: 50%;}
+	.area{width: 360px !important;}
+</style>
 </head>
 <body>
 	<div id="mainHolder">
@@ -98,65 +143,154 @@
 						<br>
 						<label for="localidad">Localidad:</label><input type="text" name="localidad" id="localidad"  value="{$localidad}"><br>
 						<h2>Datos profesionales</h2>
-						<label for="fecha_alta">Fecha acreditación:</label><input type="text" name="fecha_alta" id="fecha_alta"  value="{$fecha_alta}"><br>	
-						<label for="fecha_baja">Fecha de baja:</label><input type="text" name="fecha_baja" id="fecha_baja"  value="{$fecha_baja}"><br>						
-						<div id="opciones">
-						{if="$id>0"}							
-							<br><select id="id_opcion0" name="id_opcion[]" >
-								<option value="0"> Opciones</option>
+						<div id="idp-cfgpanel-left">
+							<label for="fecha_alta">Fecha acreditación:</label><input type="text" name="fecha_alta" id="fecha_alta"  value="{$fecha_alta}"><br>	
+							<label for="fecha_baja">Fecha de baja:</label><input type="text" name="fecha_baja" id="fecha_baja"  value="{$fecha_baja}"><br>						
+							<div id="opciones">
+							{if="$id>0"}							
+								<br><select id="id_opcion0" name="id_opcion[]" >
+									<option value="0"> Opciones</option>
+									{loop="opciones"}
+									<option value="{$value.id}" {if="$miembro.0==$value.id"} echo selected {/if} > {$value.opcion}</option>
+									{/loop}
+								</select><a href="#" class="button" id="addOpciones">+</a>
+								
+								{if="$prioridad.1>0"}
+									<br><select id="id_opcion1" name="id_opcion[]" >
+										<option value="0"> Opciones</option>
+										{loop="opciones"}
+										<option value="{$value.id}" {if="$miembro.1==$value.id"} echo selected {/if} > {$value.opcion}</option>
+										{/loop}
+									</select>
+								{/if}
+								{if="$prioridad.2>0"}
+									<br><select id="id_opcion2" name="id_opcion[]" >
+										<option value="0"> Opciones</option>
+										{loop="opciones"}
+										<option value="{$value.id}" {if="$miembro.2==$value.id"} echo selected {/if} > {$value.opcion}</option>
+										{/loop}
+									</select>
+								{/if}
+								{if="$prioridad.3>0"}
+									<br><select id="id_opcion3" name="id_opcion[]" >
+										<option value="0"> Opciones</option>
+										{loop="opciones"}
+										<option value="{$value.id}" {if="$miembro.3==$value.id"} echo selected {/if} > {$value.opcion}</option>
+										{/loop}
+									</select>
+								{/if}
+								{if="$prioridad.4>0"}
+									<br><select id="id_opcion4" name="id_opcion[]" >
+										<option value="0"> Opciones</option>
+										{loop="opciones"}
+										<option value="{$value.id}" {if="$miembro.4==$value.id"} echo selected {/if} > {$value.opcion}</option>
+										{/loop}
+									</select>
+								{/if}
+							{else}
+								<label for="id_opcion">Opciones:</label>
+								<select id="id_opcion" name="id_opcion[]" >
+								<option value="0">Opciones</option>
 								{loop="opciones"}
-								<option value="{$value.id}" {if="$prioridad.0==$value.id"} echo selected {/if} > {$value.opcion}</option>
-								{/loop}
-							</select><a href="#" class="button" id="addOpciones">+</a>
-							
-							{if="$prioridad.1>0"}
-								<br><select id="id_opcion1" name="id_opcion[]" >
-									<option value="0"> Opciones</option>
-									{loop="opciones"}
-									<option value="{$value.id}" {if="$prioridad.1==$value.id"} echo selected {/if} > {$value.opcion}</option>
-									{/loop}
-								</select>
+								<option value="{$value.id}" {if="$id_opcion==$value.id"} selected {/if}>{$value.opcion}</option>
+								{/loop}							
+								</select><a href="#" class="button" id="addOpciones">+</a>
 							{/if}
-							{if="$prioridad.2>0"}
-								<br><select id="id_opcion2" name="id_opcion[]" >
-									<option value="0"> Opciones</option>
-									{loop="opciones"}
-									<option value="{$value.id}" {if="$prioridad.2==$value.id"} echo selected {/if} > {$value.opcion}</option>
-									{/loop}
-								</select>
-							{/if}
-							{if="$prioridad.3>0"}
-								<br><select id="id_opcion3" name="id_opcion[]" >
-									<option value="0"> Opciones</option>
-									{loop="opciones"}
-									<option value="{$value.id}" {if="$prioridad.3==$value.id"} echo selected {/if} > {$value.opcion}</option>
-									{/loop}
-								</select>
-							{/if}
-							{if="$prioridad.4>0"}
-								<br><select id="id_opcion4" name="id_opcion[]" >
-									<option value="0"> Opciones</option>
-									{loop="opciones"}
-									<option value="{$value.id}" {if="$prioridad.4==$value.id"} echo selected {/if} > {$value.opcion}</option>
-									{/loop}
-								</select>
-							{/if}
-						{else}
-							<label for="id_opcion">Opciones:</label>
-							<select id="id_opcion" name="id_opcion[]" >
-							<option value="0">Opciones</option>
-							{loop="opciones"}
-							<option value="{$value.id}" {if="$id_opcion==$value.id"} selected {/if}>{$value.opcion}</option>
+							</div>
+							<br>						
+							<label for="email">Email:</label><input type="text" name="email" id="email"  value="{$email}"><br>
+							<label for="telefonoC">Teléfono:</label><input type="text" name="telefonoC" id="telefonoC"  value="{$telefonoC}"><br>
+							<label for="telefono1C">Teléfono 2:</label><input type="text" name="telefono1C" id="telefono1C"  value="{$telefono1C}"><br>
+							<label for="telefono2C">Teléfono 3:</label><input type="text" name="telefono2C" id="telefono2C"  value="{$telefono2C}"><br>
+							<label for="direccionC">Dirección:</label><input type="text" name="direccionC" id="direccionC"  value="{$direccionC}"><br>
+							<label for="cpC">C.P.:</label><input type="text" name="cpC" id="cpC"  value="{$cpC}"><br>
+							<label for="id_provinciaC">Provincia:</label>
+							<select id="id_provinciaC" name="id_provinciaC">
+							<option value="0">Seleccione un provincia</option>
+							{loop="provincias"}
+							<option value="{$value.id}" {if="$id_provinciaC==$value.id"} selected {/if}>{$value.provincia}</option>
 							{/loop}							
-							</select><a href="#" class="button" id="addOpciones">+</a>
-						{/if}
+							</select>
+							<br>
+							<label for="localidadC">Localidad:</label><input type="text" name="localidadC" id="localidadC"  value="{$localidadC}"><br>	
 						</div>
-						<br>						
-						<label for="email">Email:</label><input type="text" name="email" id="email"  value="{$email}"><br>
-						<label for="telefonoC">Teléfono:</label><input type="text" name="telefonoC" id="telefonoC"  value="{$telefonoC}"><br>
-						<label for="telefono1C">Teléfono 2:</label><input type="text" name="telefono1C" id="telefono1C"  value="{$telefono1C}"><br>
-						<label for="telefono2C">Teléfono 3:</label><input type="text" name="telefono2C" id="telefono2C"  value="{$telefono2C}"><br>
-						<label for="direccionC">Dirección:</label><input type="text" name="direccionC" id="direccionC"  value="{$direccionC}"><br>
+						<div id="mapa"></div>
+						<input type="hidden" name="latitud" id="latitud" value="{$latitud}">	
+						<input type="hidden" name="longitud" id="longitud" value="{$longitud}">	
+						<br>		
+						<h2>Diplomas</h2>
+						<div id="idp-cfgpanel-mitad">
+							<h2>Titulación</h2>
+							<textarea id="titulo" class="area" rows="8" name="titulo">{$titulo}</textarea>
+							<h2>Idiomas</h2>
+							<textarea id="idioma" class="area" rows="8" name="idioma">{$idioma}</textarea>
+						</div>
+						<div id="idp-cfgpanel-mitad">
+							<h2>Especialidades</h2>
+							<textarea id="especialidades" class="area" rows="8" name="especialidades">{$especialidades}</textarea>
+							<h2>Observaciones</h2>
+							<textarea id="observaciones" class="area" rows="8" name="observaciones">{$observaciones}</textarea>
+						</div>
+						<h2>Es miembro de: </h2>
+							<div id="miembro">
+							{if="$id>0"}							
+								<br><select id="id_miembro" name="id_miembro[]" >
+									<option value="0"> Miembros de</option>
+									{loop="opciones"}
+									<option value="{$value.id}" {if="$prioridad.0==$value.id"} echo selected {/if} > {$value.opcion}</option>
+									{/loop}
+								</select><a href="#" class="button" id="addOpciones">+</a>
+								
+								{if="$prioridad.1>0"}
+									<br><select id="id_miembro" name="id_miembro[]" >
+										<option value="0"> Miembros de</option>
+										{loop="opciones"}
+										<option value="{$value.id}" {if="$miembro.1==$value.id"} echo selected {/if} > {$value.opcion}</option>
+										{/loop}
+									</select>
+								{/if}
+								{if="$prioridad.2>0"}
+									<br><select id="id_miembro" name="id_miembro[]" >
+										<option value="0"> Miembros de</option>
+										{loop="opciones"}
+										<option value="{$value.id}" {if="$miembro.2==$value.id"} echo selected {/if} > {$value.opcion}</option>
+										{/loop}
+									</select>
+								{/if}
+								{if="$prioridad.3>0"}
+									<br><select id="id_miembro" name="id_miembro[]" >
+										<option value="0"> Miembros de</option>
+										{loop="opciones"}
+										<option value="{$value.id}" {if="$miembro.3==$value.id"} echo selected {/if} > {$value.opcion}</option>
+										{/loop}
+									</select>
+								{/if}
+								{if="$prioridad.4>0"}
+									<br><select id="id_miembro" name="id_miembro[]" >
+										<option value="0"> Miembros de</option>
+										{loop="opciones"}
+										<option value="{$value.id}" {if="$miembro.4==$value.id"} echo selected {/if} > {$value.opcion}</option>
+										{/loop}
+									</select>
+								{/if}
+								{if="$prioridad.5>0"}
+									<br><select id="id_miembro" name="id_miembro[]" >
+										<option value="0"> Miembros de</option>
+										{loop="opciones"}
+										<option value="{$value.id}" {if="$miembro.4==$value.id"} echo selected {/if} > {$value.opcion}</option>
+										{/loop}
+									</select>
+								{/if}
+							{else}
+								<label for="id_opcion">Opciones:</label>
+								<select id="id_opcion" name="id_opcion[]" >
+								<option value="0">Opciones</option>
+								{loop="opciones"}
+								<option value="{$value.id}" {if="$id_opcion==$value.id"} selected {/if}>{$value.opcion}</option>
+								{/loop}							
+								</select><a href="#" class="button" id="addOpciones">+</a>
+							{/if}
+							</div>
 						<div class="center">
 							<input type="hidden" name="id" id="id" value="{$id}">
 							<input type="submit" id="submit" value="Guardar">
