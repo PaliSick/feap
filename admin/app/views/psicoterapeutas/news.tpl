@@ -147,46 +147,13 @@
 							<label for="fecha_alta">Fecha acreditación:</label><input type="text" name="fecha_alta" id="fecha_alta"  value="{$fecha_alta}"><br>	
 							<label for="fecha_baja">Fecha de baja:</label><input type="text" name="fecha_baja" id="fecha_baja"  value="{$fecha_baja}"><br>						
 							<div id="opciones">
-							{if="$id>0"}							
-								<br><select id="id_opcion0" name="id_opcion[]" >
+							{loop="cantOpciones"}
+								<br><select id="id_opcion4" name="id_opcion[]" >
 									<option value="0"> Opciones</option>
 									{loop="opciones"}
-									<option value="{$value.id}" {if="$miembro.0==$value.id"} echo selected {/if} > {$value.opcion}</option>
+									<option value="{$value.id}" {if="$miembro.4==$value.id"} echo selected {/if} > {$value.opcion}</option>
 									{/loop}
-								</select><a href="#" class="button" id="addOpciones">+</a>
-								
-								{if="$prioridad.1>0"}
-									<br><select id="id_opcion1" name="id_opcion[]" >
-										<option value="0"> Opciones</option>
-										{loop="opciones"}
-										<option value="{$value.id}" {if="$miembro.1==$value.id"} echo selected {/if} > {$value.opcion}</option>
-										{/loop}
-									</select>
-								{/if}
-								{if="$prioridad.2>0"}
-									<br><select id="id_opcion2" name="id_opcion[]" >
-										<option value="0"> Opciones</option>
-										{loop="opciones"}
-										<option value="{$value.id}" {if="$miembro.2==$value.id"} echo selected {/if} > {$value.opcion}</option>
-										{/loop}
-									</select>
-								{/if}
-								{if="$prioridad.3>0"}
-									<br><select id="id_opcion3" name="id_opcion[]" >
-										<option value="0"> Opciones</option>
-										{loop="opciones"}
-										<option value="{$value.id}" {if="$miembro.3==$value.id"} echo selected {/if} > {$value.opcion}</option>
-										{/loop}
-									</select>
-								{/if}
-								{if="$prioridad.4>0"}
-									<br><select id="id_opcion4" name="id_opcion[]" >
-										<option value="0"> Opciones</option>
-										{loop="opciones"}
-										<option value="{$value.id}" {if="$miembro.4==$value.id"} echo selected {/if} > {$value.opcion}</option>
-										{/loop}
-									</select>
-								{/if}
+								</select>{if="$key==0"}<a href="#" class="button" id="addOpciones">+</a>{/if}								
 							{else}
 								<label for="id_opcion">Opciones:</label>
 								<select id="id_opcion" name="id_opcion[]" >
@@ -233,63 +200,29 @@
 						</div>
 						<h2>Es miembro de: </h2>
 							<div id="miembro">
-							{if="$id>0"}							
-								<br><select id="id_miembro" name="id_miembro[]" >
-									<option value="0"> Miembros de</option>
+							
+								{loop="cantMiembros"}
+									{$aux=$key}
+									<label for="id_opcion">Opciones:</label>
+									<select id="id_opcion" name="id_opcion[]" >
+									<option value="0">Opciones</option>
 									{loop="opciones"}
-									<option value="{$value.id}" {if="$prioridad.0==$value.id"} echo selected {/if} > {$value.opcion}</option>
+									<option value="{$value.id}" {if="$cantMiembros[$aux][id_opcion]==$value.id"} selected {/if}>{$value.opcion} | {$cantMiembros[$aux][id_opcion]}</option>
 									{/loop}
-								</select><a href="#" class="button" id="addOpciones">+</a>
+									</select>{if="$key==0"}<a href="#" class="button" id="addMiembros">+</a>{/if}
+									
+									{$cantMiembros[$aux][id_opcion]} o {$value.id_opcion} y {$as}
+								{else}
+									<label for="id_opcion">Opciones:</label>
+									<select id="id_opcion" name="id_opcion[]" >
+									<option value="0">Opciones</option>
+									{loop="opciones"}
+									<option value="{$value.id}" {if="$id_opcion==$value.id"} selected {/if}>{$value.opcion}</option>
+									{/loop}
+									</select><a href="#" class="button" id="addMiembros">+</a>
+								{/loop}						
 								
-								{if="$prioridad.1>0"}
-									<br><select id="id_miembro" name="id_miembro[]" >
-										<option value="0"> Miembros de</option>
-										{loop="opciones"}
-										<option value="{$value.id}" {if="$miembro.1==$value.id"} echo selected {/if} > {$value.opcion}</option>
-										{/loop}
-									</select>
-								{/if}
-								{if="$prioridad.2>0"}
-									<br><select id="id_miembro" name="id_miembro[]" >
-										<option value="0"> Miembros de</option>
-										{loop="opciones"}
-										<option value="{$value.id}" {if="$miembro.2==$value.id"} echo selected {/if} > {$value.opcion}</option>
-										{/loop}
-									</select>
-								{/if}
-								{if="$prioridad.3>0"}
-									<br><select id="id_miembro" name="id_miembro[]" >
-										<option value="0"> Miembros de</option>
-										{loop="opciones"}
-										<option value="{$value.id}" {if="$miembro.3==$value.id"} echo selected {/if} > {$value.opcion}</option>
-										{/loop}
-									</select>
-								{/if}
-								{if="$prioridad.4>0"}
-									<br><select id="id_miembro" name="id_miembro[]" >
-										<option value="0"> Miembros de</option>
-										{loop="opciones"}
-										<option value="{$value.id}" {if="$miembro.4==$value.id"} echo selected {/if} > {$value.opcion}</option>
-										{/loop}
-									</select>
-								{/if}
-								{if="$prioridad.5>0"}
-									<br><select id="id_miembro" name="id_miembro[]" >
-										<option value="0"> Miembros de</option>
-										{loop="opciones"}
-										<option value="{$value.id}" {if="$miembro.4==$value.id"} echo selected {/if} > {$value.opcion}</option>
-										{/loop}
-									</select>
-								{/if}
-							{else}
-								<label for="id_opcion">Opciones:</label>
-								<select id="id_opcion" name="id_opcion[]" >
-								<option value="0">Opciones</option>
-								{loop="opciones"}
-								<option value="{$value.id}" {if="$id_opcion==$value.id"} selected {/if}>{$value.opcion}</option>
-								{/loop}							
-								</select><a href="#" class="button" id="addOpciones">+</a>
-							{/if}
+							
 							</div>
 						<div class="center">
 							<input type="hidden" name="id" id="id" value="{$id}">

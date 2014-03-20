@@ -121,6 +121,8 @@ class psicoterapeutasModel extends BaseModel
 		return $r;			
 	}
 
+
+
 }
 
 ?>
