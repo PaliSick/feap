@@ -12,7 +12,8 @@ class psicoterapeutasController extends BaseController {
 			case 'carga-datos': $this->tpl->assign('bread_action', 'Carga de datos'); break;
 			default: $this->tpl->assign('bread_action', 'Default');
 		}
-		$this->tpl->assign('bread_section', 'Factura');
+		$this->tpl->assign('section',0);//con uno vuelve al index del controlador si tiene
+		$this->tpl->assign('bread_section', 'Psicoterapeutas');
 	}
 	
 	public function listado() {
