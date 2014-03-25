@@ -59,4 +59,33 @@ class comunicacionController extends BaseController {
 
 	}
 
+	public function contactos()
+	{
+		if (Router::getParam(0) == 'alert') {
+			$msgType = Router::getParam(1);
+			$msg = Router::getParam(2);
+			if ($msgType && $msg) {
+				$this->tpl->assign('msg', $msg);
+				$this->tpl->assign('msgType', $msgType);
+			}			
+		} 
+
+		$paginado = '';	
+		$params = Router::getParams();
+		$p = array();
+		for($i = 0, $l = count($params); $i<$l; $i = $i + 2) {
+			$p[$params[$i]] = urldecode($params[$i+1]);
+		}
+
+		if (!empty($p['q']) && $p['q'] != '*')
+			$filter= $p['q'];
+		
+		$tipo = $p['tipo'];
+
+		$this->tpl->assign('menu', array("5"=>' class="selected"'));
+		$this->tpl->assign('contactos', $this->model->getContactos($filter, $tipo,  $p['page'] , $paginado));
+		$this->tpl->assign('paginado', $paginado);	
+		echo $this->renderAction('comunicacion/contactos');		
+	}
+
 }

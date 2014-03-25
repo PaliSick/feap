@@ -92,20 +92,26 @@
 						</div>
 						<br><br><br>
 					<h2>Listado de Grupos</h2>	
-					<table  class="idp-table-min">
+					<table  class="idp-table">
 						<tr>
-							<th style="width: 600px;">Grupo</th>
-							<th style="width: 80px;">Editar</th>
-							<th style="width: 80px;">Eliminar</th>
+							<th >Nombre</th>
+							<th>Email</th>
+							<th>Grupos</th>
+							<th style="width: 40px;">Editar</th>
+							<th style="width: 40px;">Eliminar</th>
 						</tr>
-						{loop="grupos"}
+						{loop="contactos"}
 						<tr>
-							<td>{$value.grupo}</td>
+							<td>{$value.nombre}</td>
+							<td>{$value.email}</td>
+							<td>{$value.grupos}</td>
 							<td><a href="comunicacion/edit-grupo/{$value.id}" class="edit">Edit</a></td>
 							<td><a href="comunicacion/delete-grupo/{$value.id}" class="delete">Eliminar</a></td>
-						</tr>
-						
+						</tr>						
 						{/loop}
+						<tr>
+							<td colspan="5">{$paginado}</td>
+						</tr>
 					</table>
 
 					<br>
