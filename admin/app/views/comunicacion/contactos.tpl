@@ -3,7 +3,7 @@
 	<script type="text/javascript">
 
 		$(document).ready(function(e) {
-			$('.edit').click(function(e) {
+			$('.editar').click(function(e) {
 				e.preventDefault();
 				$l = $(this);
 				$.get($l.attr('href'), function(data) {
@@ -30,7 +30,16 @@
 
 			});
 
-			$('#grupo-nuevo').submit(function(e) {
+			$('#filter_emails').submit(function(e) {
+				e.preventDefault();
+				var q = $('#filter_query').val() || '*';
+				var email=$('#filter_email').val() || '*';
+				var grupo=$('#filter_grupo').val() || 0;
+				window.location = '{$base_path}/comunicacion/contactos/q/'+q+'/email/'+email+'/grupo/'+grupo;
+				return true;
+			});
+
+			$('#contacto-nuevo').submit(function(e) {
 				var $this = $(this);
 				e.preventDefault();
 
@@ -41,7 +50,7 @@
 				$.post($this.attr('action'), params, function(data){
 					
 					if (data.status == 'ok') {
-						window.location = "{$base_path}/comunicacion/grupos/alert/success/"+data.info;
+						window.location = "{$base_path}/comunicacion/contactos/alert/success/"+data.info;
 						
 						return;
 					} else {
@@ -71,17 +80,28 @@
 				<div id="idp-cfgpanel-canvas">
 					<!-- Aqui comienza el body del form -->
 
-						<input type="submit" value="Nuevo Grupo"  onclick="$('#nuevo').slideToggle(500); return false;" style="background-color:#CCC;">
+						<input type="submit" value="Nuevo Contacto"  onclick="$('#nuevo').slideToggle(500); return false;" style="background-color:#CCC;">
 					<br><br>
 						<div id="nuevo" style="display: none">
-							<form action="comunicacion/grupo-submit" name="grupo-nuevo" id="grupo-nuevo" method="get">
+							<form action="comunicacion/contacto-submit" name="contacto-nuevo" id="contacto-nuevo" method="get">
 								<table class="idp-table-mid">
 									<tr>
+										<th>Nombre</th>
+										<th>Email</th>
 										<th>Grupo</th>
+										<th></th>
 									</tr>
 									<tr>
-										<td><input type="text" name="grupo" id="grupo" size="30" value=""></td>
-										<td><input type="hidden" id="id_grupo" name="id_grupo" value="{$id_grupo}">			
+										<td><input type="text" name="nombre" id="nombre" size="30" value=""></td>
+										<td><input type="text" name="email" id="email" size="30" value=""></td>
+										<td>
+											<select name="grupo" id="grupo" style="width:110px">	
+												<option value="0"></option>		
+												{loop="grupos"}
+												<option value="{$value.id}" {if="$search_params.grupo==$value.id"}selected{/if}>{$value.grupo}</option>
+												{/loop}			
+											</select></td>
+										<td><input type="hidden" id="id" name="id" value="{$id}">			
 									<input type="submit" id="submit" value="Guardar"></td>
 									</tr>
 								</table>
@@ -91,7 +111,29 @@
 							</form>
 						</div>
 						<br><br><br>
-					<h2>Listado de Grupos</h2>	
+					<h2>Listado de Contactos</h2>	
+						<h3>Busqueda</h3>
+					<form action="factura/lista" method="get" id="filter_emails">
+						<div class="fil">
+							<label for="filter_query">Nombre y/o Apellido:</label>
+							<input type="text" name="filter_query" id="filter_query" value="{$search_params.q}" style="width:140px">
+						</div>
+						<div class="fil">
+							<label for="filter_query">Email:</label>
+							<input type="text" name="filter_email" id="filter_email" value="{$search_params.email}" style="width:140px">
+						</div>
+						<div class="fil">
+							<label for="filter_estado">Grupo:</label>
+							<select name="filter_grupo" id="filter_grupo" style="width:110px">	
+								<option value="0"></option>		
+								{loop="grupos"}
+								<option value="{$value.id}" {if="$search_params.grupo==$value.id"}selected{/if}>{$value.grupo}</option>
+								{/loop}			
+							</select>						
+						</div>
+
+						<input type="submit" value="Buscar" style="margin-top: 13px">
+					</form>
 					<table  class="idp-table">
 						<tr>
 							<th >Nombre</th>
@@ -104,8 +146,8 @@
 						<tr>
 							<td>{$value.nombre}</td>
 							<td>{$value.email}</td>
-							<td>{$value.grupos}</td>
-							<td><a href="comunicacion/edit-grupo/{$value.id}" class="edit">Edit</a></td>
+							<td>{$value.grupo}</td>
+							<td><a {$value.url} >Edit</a></td>
 							<td><a href="comunicacion/delete-grupo/{$value.id}" class="delete">Eliminar</a></td>
 						</tr>						
 						{/loop}

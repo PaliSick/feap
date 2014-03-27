@@ -224,6 +224,8 @@
 								
 							
 							</div>
+							<div id="grupos">
+							</div>
 						<div class="center">
 							<input type="hidden" name="id" id="id" value="{$id}">
 							<input type="submit" id="submit" value="Guardar">
