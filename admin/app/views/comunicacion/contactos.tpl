@@ -9,8 +9,11 @@
 				$.get($l.attr('href'), function(data) {
 					if (data.id > 0) {
 						$('#nuevo').show(500);
-						$('#grupo').val(data.grupo);
-						$('#id_grupo').val(data.id);
+						var index = data.id_grupo;
+						$('#grupo option').eq(index).prop('selected',true);
+						$('#nombre').val(data.nombre);
+						$('#email').val(data.email);
+						$('#id').val(data.id);
 					} else{ alert(data.info);$('#nuevo').hide(500); }
 				}, 'json');
 

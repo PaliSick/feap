@@ -9,8 +9,8 @@ class comunicacionController extends BaseController {
 		switch(Router::getActionSeo()){
 			case 'grupos': $this->tpl->assign('bread_action', 'Listado grupos'); break;
 			case 'grupos-new': $this->tpl->assign('bread_action', 'Nuevo grupo'); break;
-			case 'boletines': $this->tpl->assign('bread_action', 'Listado boletines'); break;
-			case 'boletines-news': $this->tpl->assign('bread_action', 'Nuevo boletin'); break;
+			case 'distribuir': $this->tpl->assign('bread_action', 'Listado boletines'); break;
+			case 'news': $this->tpl->assign('bread_action', 'Nuevo boletin'); break;
 			default: $this->tpl->assign('bread_action', 'Default');
 		}
 		$this->tpl->assign('section',0);//con uno vuelve al index del controlador si tiene
@@ -115,5 +115,54 @@ class comunicacionController extends BaseController {
 					else echo '{"status": "error", "info": "'.$msg.'"}';
 
 	}
+
+	public function edit_contacto()
+	{
+		$error = '';
+		$id = Router::getParam(0);
+		if ($id>0)			
+			echo str_replace('\\/', '/', json_encode($this->model->getContacto($id,$error), JSON_HEX_TAG | JSON_HEX_QUOT | JSON_HEX_APOS));
+		else
+			echo '{"status": "error", "info": "'.$error.'"}';
+	}
+
+	public function news()
+	{
+		$id = Router::getParam(0);
+		if($id>0){
+		 	$this->tpl->assign($this->model->getLetter($id));
+		}
+
+		$this->tpl->assign('menu', array("6"=>' class="selected"'));
+		$this->tpl->assign('grupos', $this->model->getGrupos());
+		echo $this->renderAction("comunicacion/news");
+	}
+
+	public function submit_letters()
+	{
+		$error = '';
+		if ($this->model->insertLetters($error)){
+			echo '{"status": "ok", "info": "'.$error.'"}';
+		} else {
+			echo '{"status": "error", "info": "'.$error.'"}';
+		}
+	}
+
+	public function distribuir()
+	{
+		if (Router::getParam(0) == 'alert') {
+			$msgType = Router::getParam(1);
+			$msg = Router::getParam(2);
+			if ($msgType && $msg) {
+				$this->tpl->assign('msg', $msg);
+				$this->tpl->assign('msgType', $msgType);
+			}
+			
+		} 
+		$this->tpl->assign('menu', array("7"=>' class="selected"'));
+		$this->tpl->assign('grupos', $this->model->getLetters());
+		echo $this->renderAction('comunicacion/lista');		
+	}
+
 
 }

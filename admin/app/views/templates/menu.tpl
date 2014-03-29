@@ -15,8 +15,8 @@
 		<ul>
 			<li{$menu.4}><a href="comunicacion/grupos">Grupos de contactos</a></li>
 			<li{$menu.5}><a href="comunicacion/contactos">Contactos</a></li>
-			<li{$menu.6}><a href="comunicacion/boletines">Boletines</a></li>
-			<li{$menu.7}><a href="comunicacion/boletines-news">Nuevo boletin</a></li>
+			<li{$menu.6}><a href="comunicacion/news">Nueva comunicación</a></li>
+			<li{$menu.7}><a href="comunicacion/distribuir">Distribuir comunicación</a></li>
 		</ul>
 	</div>
 </div>

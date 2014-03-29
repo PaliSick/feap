@@ -86,7 +86,7 @@ class comunicacionModel extends BaseModel
 			if($row['id_psicologo']>0)
 				$row['url']='href="'.Router::getSiteRoot().'/psicoterapeutas/news/'.$row['id_psicologo'].'#grupos" class="edit"';
 			else
-				$row['url']='href="'.Router::getSiteRoot().'/comunicacion/edit-grupo/'.$row['id'].'" class="edit editar"';
+				$row['url']='href="'.Router::getSiteRoot().'/comunicacion/edit-contacto/'.$row['id'].'" class="edit editar"';
 
 			$r[] = $row;			
 		}
@@ -96,7 +96,7 @@ class comunicacionModel extends BaseModel
 	public function editContacto(&$msg) {
 
 		//Primero me fijo que no exista, si existe mando error (no replace porque puedo borrar )
-		if ((int)$_POST['id_grupo']== 0) {
+		if ((int)$_POST['grupo']== 0) {
 			$sql=$this->db->prepare("SELECT id FROM emails WHERE email='%s'",array(trim($_POST['email'])));
 			$q=$this->db->query($sql);
 			if(mysql_num_rows($q)>0){
@@ -108,7 +108,7 @@ class comunicacionModel extends BaseModel
 		}else {
 			return false;
 		}
-		if ((int)$_POST['id_grupo']== 0) {
+		if ((int)$_POST['grupo']== 0) {
 			$sql = $this->db->prepare("INSERT INTO emails (id, nombre, email)  VALUES (NULL, '%s', '%s');", array(
 										$_POST['nombre'],trim($_POST['email']) ));
 			
@@ -123,7 +123,7 @@ class comunicacionModel extends BaseModel
 
 		$q = $this->db->query($sql);
 
-		if ((int)$_POST['id_grupo']== 0) 
+		if ((int)$_POST['grupo']== 0) 
 			$id=mysql_insert_id() ;
 		else			
 			$id=$_POST['id'];
@@ -153,5 +153,80 @@ class comunicacionModel extends BaseModel
 			return false;
 		}
 	}
+
+	public function getContacto($id,&$msg){
+		$sql = "SELECT e.id,  e.email, e.nombre, b.id_grupo  FROM emails e LEFT JOIN rel_email_boletin b ON e.id=b.id_email WHERE e.id=%d  ";
+		$sql = $this->db->prepare($sql, array($id));
+		$q = $this->db->query($sql);
+		if ($q)
+			return mysql_fetch_assoc($q);		
+		else{
+			$msg=mysql_error();
+			return false;
+		}
+	}
+
+	public function insertLetters(&$msg)
+	{
+
+
+		//Validamos algunos campos
+		if (empty($_POST['name']))	{$msg = 'Ingrese el nombre del boletín'; 	return false;}
+		if (empty($_POST['subject']))	{$msg = 'Ingrese el asunto'; return false;}
+		if (empty($_POST['fecha_envio']))	{$msg = 'Ingrese el asunto'; return false;}
+
+		if (isset($_POST['id']) && (int)$_POST['id'] != 0) {
+			$sql="UPDATE letters SET name='%s', subject='%s', body='%s', fecha=NOW(), fecha_envio='%s' WHERE id=%d";
+			$sql=$this->db->prepare($sql, array($_POST['name'], $_POST['subject'], $_POST['ebody'], $_POST['fecha_envio'], $_POST['id'] ));
+			
+			$q = $this->db->query($sql);
+			if ($q === true)
+					return true;	 		
+			else{
+				$msg=mysql_error();
+				return false;
+			}	
+		
+		}else{
+
+			$sql="INSERT INTO letters (`id`, `name`, `subject`, `body`, `fecha`, `fecha_envio`, `estado`) VALUES (NULL, '%s', '%s', '%s', NOW(), '%s', 1)";
+			$sql=$this->db->prepare($sql, array($_POST['name'], $_POST['subject'], $_POST['ebody'], $_POST['fecha_envio'] ));
+			$q = $this->db->query($sql);
+			if ($q === true)
+					return true;	 		
+			else{
+				$msg=mysql_error();
+				return false;
+			}			
+		
+		}
+
+
+	}
+
+	public function getLetter($id)
+	{
+		$sql = "SELECT *  FROM letters e WHERE e.id=%d  ";
+		$sql = $this->db->prepare($sql, array($id));
+		$q = $this->db->query($sql);
+		if ($q)
+			return mysql_fetch_assoc($q);		
+		else
+			return false;
+		
+	}
+
+	public function getLetters()
+	{
+
+		
+		$q = $this->db->query("SELECT * FROM letters");
+		$r=array();
+		while ($row = mysql_fetch_assoc($q)) {
+			$r[]=$row;
+		}
+		return $r;		
+	}
+
 
 }

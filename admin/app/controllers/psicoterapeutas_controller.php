@@ -134,9 +134,6 @@ class psicoterapeutasController extends BaseController {
 		$this->tpl->assign('menu', array("2"=>' class="selected"'));
 		$this->tpl->assign('provincias', $this->model->getProvincias());
 		$this->tpl->assign('opciones', $this->model->getOpciones());
-		$this->tpl->assign('id_opcion', array(0=>5,1=>3,2=>8,3=>7));
-		$this->tpl->assign('cantMiembros', array(0=>array("id_opcion"=>5),1=>array("id_opcion"=>8),2=>array("id_opcion"=>3)));
-		print_r(array(0=>array("id_opcion"=>5),1=>array("id_opcion"=>8),2=>array("id_opcion"=>3)));
 		echo $this->renderAction("psicoterapeutas/news");
 	}
 
