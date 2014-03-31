@@ -160,7 +160,7 @@ class comunicacionController extends BaseController {
 			
 		} 
 		$this->tpl->assign('menu', array("7"=>' class="selected"'));
-		$this->tpl->assign('grupos', $this->model->getLetters());
+		$this->tpl->assign('letters', $this->model->getLetters());
 		echo $this->renderAction('comunicacion/lista');		
 	}
 

@@ -431,9 +431,9 @@ a.details {background: transparent url("../img/find.png") scroll no-repeat top l
 a.confirm {background: transparent url("../img/accept.png") scroll no-repeat top left;}
 a.delete {background: transparent url("../img/trash.png") scroll no-repeat top left;}
 a.descarga {background: transparent url("../img/icon_download.png") scroll no-repeat top left;}
-a.edit {
-    background: url("../img/edit.png") no-repeat scroll left top transparent;
-}
+a.edit {    background: url("../img/edit.png") no-repeat scroll left top transparent;}
+a.email{display:block; width:30px; height: 25px; line-height:16px;  text-indent:-99999px; overflow: hidden; margin: auto; }
+a.email {    background: url("../img/mail.png") no-repeat scroll left top transparent;}
 a.crear {background: transparent url("../img/icon-new.png") scroll no-repeat top left;}
 a.agregar{background: transparent url("../img/icon-agregar.png") scroll no-repeat top left;}
 .params-left {width:300px; margin:0 10px; float:left;}

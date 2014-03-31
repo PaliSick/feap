@@ -169,44 +169,75 @@ class comunicacionModel extends BaseModel
 	public function insertLetters(&$msg)
 	{
 
-
+		//Start the transaction
+		if ($this->db->begin_transaction()){
+		}else {
+			$msg="Error en la BD, intente nuevamente más tarde";
+			return false;
+		}
 		//Validamos algunos campos
 		if (empty($_POST['name']))	{$msg = 'Ingrese el nombre del boletín'; 	return false;}
 		if (empty($_POST['subject']))	{$msg = 'Ingrese el asunto'; return false;}
 		if (empty($_POST['fecha_envio']))	{$msg = 'Ingrese el asunto'; return false;}
-
+		($_POST['id_grupo']==0)? $id_grupo='NULL':$id_grupo=$_POST['id_grupo'] ;
 		if (isset($_POST['id']) && (int)$_POST['id'] != 0) {
-			$sql="UPDATE letters SET name='%s', subject='%s', body='%s', fecha=NOW(), fecha_envio='%s' WHERE id=%d";
-			$sql=$this->db->prepare($sql, array($_POST['name'], $_POST['subject'], $_POST['ebody'], $_POST['fecha_envio'], $_POST['id'] ));
-			
-			$q = $this->db->query($sql);
-			if ($q === true)
-					return true;	 		
-			else{
-				$msg=mysql_error();
+			$sql="UPDATE letters SET name='%s', subject='%s', body='%s', fecha=NOW() WHERE id=%d";
+			$sql=$this->db->prepare($sql, array($_POST['name'], $_POST['subject'], $_POST['ebody'],  $_POST['id'] ));
+			try {
+				$this->db->query($sql);
+			} catch (Exception $e) {
+				$this->db->rollback();
+				$msg='Error updateando letters: '.mysql_error();
 				return false;
-			}	
-		
+			}
+			$sql="UPDATE envios SET id_grupo=%s, fecha_ini='%s' WHERE id_letter=%d";
+			$sql=$this->db->prepare($sql, array($id_grupo,$_POST['fecha_envio'],$_POST['id']));
+			
+			try {
+				$this->db->query($sql);
+			} catch (Exception $e) {
+				$this->db->rollback();
+				$msg='Error  updateando envios:'.mysql_error();
+				return false;
+			}		
 		}else{
 
-			$sql="INSERT INTO letters (`id`, `name`, `subject`, `body`, `fecha`, `fecha_envio`, `estado`) VALUES (NULL, '%s', '%s', '%s', NOW(), '%s', 1)";
-			$sql=$this->db->prepare($sql, array($_POST['name'], $_POST['subject'], $_POST['ebody'], $_POST['fecha_envio'] ));
-			$q = $this->db->query($sql);
-			if ($q === true)
-					return true;	 		
-			else{
-				$msg=mysql_error();
+			$sql="INSERT INTO letters (`id`, `name`, `subject`, `body`, `fecha`, `estado`) VALUES (NULL, '%s', '%s', '%s', NOW(), 1)";
+			$sql=$this->db->prepare($sql, array($_POST['name'], $_POST['subject'], $_POST['ebody'] ));
+			try {
+				$this->db->query($sql);
+				$id=mysql_insert_id() ;
+			} catch (Exception $e) {
+				$this->db->rollback();
+				$msg='Error insertando letters'.mysql_error();;
 				return false;
-			}			
+			}
+			$sql="INSERT INTO envios (`id`, `id_grupo`, `id_letter`, `fecha_ini`) VALUES (NULL, %s, %d, '%s')";
+			$sql=$this->db->prepare($sql, array($id_grupo, $id, $_POST['fecha_envio'] ));
+			try {
+				$this->db->query($sql);
+				$id=mysql_insert_id() ;
+			} catch (Exception $e) {
+				$this->db->rollback();
+				$msg='Error insertando envios'.mysql_error();
+				return false;
+			}
 		
 		}
-
+		if ($this->db->commit()) {
+			$msg="Datos guardados correctamente";
+			return true;
+		} else {
+			$this->db->rollback();
+			$msg="Error al final: ".mysql_error();
+			return false;
+		}
 
 	}
 
 	public function getLetter($id)
 	{
-		$sql = "SELECT *  FROM letters e WHERE e.id=%d  ";
+		$sql = "SELECT l.*,  e.id_grupo, e.fecha_ini FROM letters l, envios e WHERE e.id=%d AND e.id_letter=e.id ";
 		$sql = $this->db->prepare($sql, array($id));
 		$q = $this->db->query($sql);
 		if ($q)
@@ -219,10 +250,13 @@ class comunicacionModel extends BaseModel
 	public function getLetters()
 	{
 
+		$sql="SELECT l.*,  e.id_grupo,  DATE_FORMAT(e.fecha_ini, '{{date_format}}') as fecha_ini,  DATE_FORMAT(e.fecha_fin, '{{date_format}}') as fecha_fin FROM letters l, envios e WHERE  e.id_letter=e.id ";
+		$sql = str_replace('{{date_format}}', '%d/%m/%Y', $sql);
+		$q = $this->db->query($sql);
 		
-		$q = $this->db->query("SELECT * FROM letters");
 		$r=array();
 		while ($row = mysql_fetch_assoc($q)) {
+			if($row['fecha_fin']==NULL) $row['fecha_fin']='Sin enviar';
 			$r[]=$row;
 		}
 		return $r;		

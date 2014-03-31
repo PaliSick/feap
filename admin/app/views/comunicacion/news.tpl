@@ -98,9 +98,16 @@
 					<h1>Nuevo Boletin</h1>
 
 					<form action="comunicacion/submit-letters" name="new-letters" id="new-letters" method="post">
+					<label for="id_grupo">Grupo de envío:</label>
+						<select name="id_grupo" id="id_grupo" style="width:110px">	
+							<option value="0">Todos</option>		
+								{loop="grupos"}
+									<option value="{$value.id}" {if="$id_grupo==$value.id"}selected{/if}>{$value.grupo}</option>
+								{/loop}			
+						</select><br>
 						<label for="name">Nombre:</label><input type="text" class="validate[required]" name="name" id="name"  value="{$name}"><br>
 						<label for="subject">Asunto:</label><input type="text" name="subject" id="subject"  value="{$subject}" class="validate[required]"><br>
-						<label for="fecha_envio">Fecha de envio:</label><input type="text" name="fecha_envio" id="fecha_envio"  value="{$fecha_envio}" class="validate[required]"><br>
+						<label for="fecha_envio">Fecha de envio:</label><input type="text" name="fecha_envio" id="fecha_envio"  value="{$fecha_ini}" class="validate[required]"><br>
 						<label class="">Descripción: </label>
 							<div class="field-holder-wide">
 							<textarea class="validate[required]" style="width:595px;" name="ebody" id="ebody" cols="40" rows="15">{$body}</textarea><br>
